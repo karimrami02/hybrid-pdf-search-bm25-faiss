@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Search Engine</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Hybrid Search Engine</h1>
+            <p class="subtitle">BM25 + FAISS Semantic Search</p>
+        </header>
+
+        <div class="search-box">
+            <form id="searchForm">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="queryInput" 
+                        placeholder="Enter your search query..."
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" id="searchBtn">Search</button>
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="rankingSelect">Ranking Mode:</label>
+                        <select id="rankingSelect">
+                            {% for profile in ranking_profiles %}
+                            <option value="{{ profile.value }}" 
+                                {% if profile.value == default_ranking_profile %}selected{% endif %}>
+                                {{ profile.label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="limitInput">Results:</label>
+                        <input 
+                            type="number" 
+                            id="limitInput" 
+                            value="{{ default_limit }}"
+                            min="1"
+                            max="{{ max_limit }}"
+                        >
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Searching...</p>
+        </div>
+
+        <div id="results" class="results-container"></div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
